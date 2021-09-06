@@ -13,33 +13,34 @@
 </template>
 
 <script>
-export default {
-  name: 'Indesition',
-  data() {
-    return {
-      question: '',
-      answer: null,
-      image: null,
-      isValidQuestion: false
-    }
-  },
-  methods: {
-    async getAnswer() {
-      this.answer = 'Thinking...'
-      const {answer, image} = await fetch('https://yesno.wtf/api').then(response => response.json())
-      this.answer = answer
-      this.image = image
-      this.isValidQuestion = true
-    }
-  },
-  watch: {
-    question(value, oldValue) {
-      this.isValidQuestion = false
-      if (!value.includes('?')) return
-      this.getAnswer()
+  export default {
+    name: 'Indesition',
+    data() {
+      return {
+        question: '',
+        answer: null,
+        image: null,
+        isValidQuestion: false
+      }
+    },
+    methods: {
+      async getAnswer() {
+        this.answer = 'Thinking...'
+        const {answer, image} = await fetch('https://yesno.wtf/api').then(response => response.json())
+        this.answer = answer
+        this.image = image
+        this.isValidQuestion = true
+      }
+    },
+    watch: {
+      question(value, oldValue) {
+        console.log(value)
+        this.isValidQuestion = false
+        if (!value.includes('?')) return
+        this.getAnswer()
+      }
     }
   }
-}
 </script>
 
 <style scoped>
@@ -69,6 +70,7 @@ input {
   border-radius: 5px;
   border: none;
 }
+
 input:focus {
   outline: none;
 }

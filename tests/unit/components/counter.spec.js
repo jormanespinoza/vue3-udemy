@@ -1,4 +1,4 @@
-import { shallowMount, mount } from '@vue/test-utils'
+import { shallowMount } from '@vue/test-utils'
 import Counter from '@/components/Counter'
 
 describe('Counter.vue', () => {
@@ -78,5 +78,17 @@ describe('Counter.vue', () => {
     const counterValue = wrapper.find('[data-counter="counter"]').text()
 
     expect(Number(counterValue)).toBe(start)
+  })
+
+  test('should show property title', () => {
+    const title = 'Test Title'
+
+    const wrapper = shallowMount(Counter, {
+      props: {
+        title
+      }
+    })
+
+    expect(wrapper.find('h2').text()).toBe(title)
   })
 })

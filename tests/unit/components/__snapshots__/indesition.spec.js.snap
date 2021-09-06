@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Counter.vue should match snapshot 1`] = `
+<!--v-if-->
+<div class="bg-dark"></div>
+<div class="indesition-container"><input type="text" placeholder="Ask a question">
+  <p>Remember to close it with a question mark (?).</p>
+  <!--v-if-->
+</div>
+`;
