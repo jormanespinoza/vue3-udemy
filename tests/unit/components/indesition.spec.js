@@ -4,7 +4,16 @@ import Indesition from '@/components/Indesition'
 describe('Counter.vue', () => {
   let wrapper
   let clgSpy
-  global.fetch = jest.fn()
+  const apiImageUrl = 'https://yesno.wtf/assets/yes/2.gif'
+  const apiAnswer = 'yes'
+
+  global.fetch = jest.fn(() => Promise.resolve({
+    json: () => Promise.resolve({
+      answer: apiAnswer,
+      forced: false,
+      image: apiImageUrl
+    })
+  }))
 
   beforeEach(() => {
     wrapper = shallowMount(Indesition)
@@ -34,12 +43,31 @@ describe('Counter.vue', () => {
     expect(getAnswerSpy).toHaveBeenCalled()
   })
 
+  test('should getAnswer', async () => {
+    await wrapper.vm.getAnswer()
 
-  test('should getAnswer', () => {
+    const image = wrapper.find('img')
+    const h1 = wrapper.find('h1')
 
+    expect(h1.exists()).toBeTruthy()
+    expect(image.exists()).toBeTruthy()
+    expect(wrapper.vm.answer).toBe(apiAnswer)
+    expect(wrapper.vm.image).toBe(apiImageUrl)
   })
 
-  test('should fail on getAnswer', () => {
+  test('should fail on getAnswer', async () => {
+    fetch.mockImplementationOnce(() => Promise.reject('API is down'))
 
+    await wrapper.vm.getAnswer()
+
+    const image = wrapper.find('img')
+    const h1 = wrapper.find('h1')
+
+    console.log(wrapper.vm.answer)
+
+    expect(h1.exists()).toBeFalsy()
+    expect(image.exists()).toBeFalsy()
+    expect(wrapper.vm.answer).toBe('Error al conectar al API')
+    expect(wrapper.vm.image).toBe(null)
   })
 })

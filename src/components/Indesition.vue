@@ -13,34 +13,39 @@
 </template>
 
 <script>
-  export default {
-    name: 'Indesition',
-    data() {
-      return {
-        question: '',
-        answer: null,
-        image: null,
-        isValidQuestion: false
-      }
-    },
-    methods: {
-      async getAnswer() {
+export default {
+  name: 'Indesition',
+  data() {
+    return {
+      question: '',
+      answer: null,
+      image: null,
+      isValidQuestion: false
+    }
+  },
+  methods: {
+    async getAnswer() {
+      try {
         this.answer = 'Thinking...'
-        const {answer, image} = await fetch('https://yesno.wtf/api').then(response => response.json())
+        const { answer, image } = await fetch('https://yesno.wtf/api').then(response => response.json())
         this.answer = answer
         this.image = image
         this.isValidQuestion = true
-      }
-    },
-    watch: {
-      question(value, oldValue) {
-        console.log(value)
-        this.isValidQuestion = false
-        if (!value.includes('?')) return
-        this.getAnswer()
+      } catch (error) {
+        this.answer = 'Error al conectar al API'
+        this.image = null
       }
     }
+  },
+  watch: {
+    question(value, oldValue) {
+      console.log(value)
+      this.isValidQuestion = false
+      if (!value.includes('?')) return
+      this.getAnswer()
+    }
   }
+}
 </script>
 
 <style scoped>
